@@ -14,7 +14,7 @@ public class BookingRequest {
     private String name;
     private String email;
 
-    private int seats;  // fallback if passenger list is not provided
+    private int seats;
     private String mealType;
 
     private List<Passenger> passengers;

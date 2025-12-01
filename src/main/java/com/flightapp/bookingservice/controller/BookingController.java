@@ -21,21 +21,25 @@ public class BookingController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Booking> book(@RequestBody BookingRequest request) {
+
         return service.bookFlight(request);
     }
 
     @GetMapping("/ticket/{pnr}")
     public Mono<Booking> getTicket(@PathVariable String pnr) {
+
         return service.getByPnr(pnr);
     }
 
     @GetMapping("/history/{email}")
     public Flux<Booking> bookingHistory(@PathVariable String email) {
+
         return service.historyByEmail(email);
     }
 
     @DeleteMapping("/cancel/{pnr}")
     public Mono<Booking> cancel(@PathVariable String pnr) {
+
         return service.cancelByPnr(pnr);
     }
 
