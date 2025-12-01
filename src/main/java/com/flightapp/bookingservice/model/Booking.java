@@ -20,18 +20,17 @@ public class Booking {
     private String flightId;
 
     private String email;
+    private String name;
 
     private int seats;
 
     private String mealType;
 
-    private String name; // booking user name
-
-    // Store as STRING because MongoDB cannot encode ZonedDateTime without codec
     private String bookingDate;
     private String journeyDate;
 
     private double totalPrice;
+
     private BookingStatus status;
 
     private List<Passenger> passengers;

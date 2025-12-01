@@ -1,11 +1,13 @@
 package com.flightapp.bookingservice.controller;
 
-import com.flightapp.flightbookingwebflux.dto.BookingRequest;
-import com.flightapp.flightbookingwebflux.model.Booking;
-import com.flightapp.flightbookingwebflux.service.BookingService;
+import com.flightapp.bookingservice.dto.BookingRequest;
+import com.flightapp.bookingservice.model.Booking;
+import com.flightapp.bookingservice.service.BookingService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
