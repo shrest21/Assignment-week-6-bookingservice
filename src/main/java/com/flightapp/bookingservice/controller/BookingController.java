@@ -3,13 +3,11 @@ package com.flightapp.bookingservice.controller;
 import com.flightapp.bookingservice.dto.BookingRequest;
 import com.flightapp.bookingservice.model.Booking;
 import com.flightapp.bookingservice.service.BookingService;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,31 +18,27 @@ public class BookingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Booking> book(@RequestBody BookingRequest request) {
-
+    public Booking book(@RequestBody BookingRequest request) {
         return service.bookFlight(request);
     }
 
     @GetMapping("/ticket/{pnr}")
-    public Mono<Booking> getTicket(@PathVariable String pnr) {
-
+    public Booking getTicket(@PathVariable String pnr) {
         return service.getByPnr(pnr);
     }
 
     @GetMapping("/history/{email}")
-    public Flux<Booking> bookingHistory(@PathVariable String email) {
-
+    public List<Booking> bookingHistory(@PathVariable String email) {
         return service.historyByEmail(email);
     }
 
     @DeleteMapping("/cancel/{pnr}")
-    public Mono<Booking> cancel(@PathVariable String pnr) {
-
+    public Booking cancel(@PathVariable String pnr) {
         return service.cancelByPnr(pnr);
     }
 
     @GetMapping
-    public Flux<Booking> allBookings() {
+    public List<Booking> allBookings() {
         return service.allBookings();
     }
 }

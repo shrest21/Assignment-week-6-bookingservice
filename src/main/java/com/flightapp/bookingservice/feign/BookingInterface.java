@@ -1,5 +1,6 @@
 package com.flightapp.bookingservice.feign;
 
+import com.flightapp.bookingservice.model.FlightResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 public interface BookingInterface {
 
     @PostMapping("/flights/{id}/reserve")
-    void reserve(@PathVariable String id, @RequestParam int seats);
+    void reserve(@PathVariable("id") String id, @RequestParam("seats") int seats);
 
     @PostMapping("/flights/{id}/release")
-    void release(@PathVariable String id, @RequestParam int seats);
+    void release(@PathVariable("id") String id, @RequestParam("seats") int seats);
 
     @GetMapping("/flights/{id}")
-    String getFlight(@PathVariable String id);
+    FlightResponse getFlight(@PathVariable("id") String id);
 }

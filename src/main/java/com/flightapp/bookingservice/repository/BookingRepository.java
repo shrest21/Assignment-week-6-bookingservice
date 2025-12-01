@@ -1,14 +1,13 @@
 package com.flightapp.bookingservice.repository;
 
 import com.flightapp.bookingservice.model.Booking;
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import java.util.List;
 
-public interface BookingRepository extends ReactiveMongoRepository<Booking, String> {
+public interface BookingRepository extends MongoRepository<Booking, String> {
 
-    Mono<Booking> findByPnr(String pnr);
+    Booking findByPnr(String pnr);
 
-    Flux<Booking> findByEmail(String email);
+    List<Booking> findByEmail(String email);
 }
