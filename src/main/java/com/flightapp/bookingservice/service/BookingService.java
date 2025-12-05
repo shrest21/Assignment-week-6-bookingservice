@@ -1,21 +1,26 @@
 package com.flightapp.bookingservice.service;
 
+import com.flightapp.bookingservice.config.RabbitMQConfig;
 import com.flightapp.bookingservice.dto.BookingRequest;
 import com.flightapp.bookingservice.feign.BookingInterface;
-import com.flightapp.bookingservice.model.Booking;
-import com.flightapp.bookingservice.model.BookingStatus;
-import com.flightapp.bookingservice.model.FlightResponse;
+import com.flightapp.bookingservice.model.*;
 import com.flightapp.bookingservice.repository.BookingRepository;
 import com.flightapp.bookingservice.util.PnrGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class BookingService {
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     private final BookingRepository bookingRepo;
     private final BookingInterface flightClient;
@@ -55,7 +60,15 @@ public class BookingService {
         booking.setJourneyDate(flight.getFlightDate() + "T" + flight.getDepartureTime());
         booking.setTotalPrice(seatCount * flight.getPrice());
 
-        return bookingRepo.save(booking);
+        Booking saved = bookingRepo.save(booking);
+        rabbitTemplate.convertAndSend(
+                RabbitMQConfig.BOOKING_EXCHANGE,
+                RabbitMQConfig.CONFIRM_ROUTING_KEY,
+                booking
+        );
+
+
+        return saved;
     }
 
     public Booking getByPnr(String pnr) {
@@ -80,12 +93,19 @@ public class BookingService {
             throw new RuntimeException("PNR not found: " + pnr);
         }
 
-
         flightClient.release(booking.getFlightId(), booking.getSeats());
 
         booking.setStatus(BookingStatus.CANCELLED);
         booking.setBookingDate(LocalDateTime.now().toString());
 
-        return bookingRepo.save(booking);
+        Booking saved = bookingRepo.save(booking);
+        rabbitTemplate.convertAndSend(
+                RabbitMQConfig.BOOKING_EXCHANGE,
+                RabbitMQConfig.CANCEL_ROUTING_KEY,
+                booking
+        );
+
+
+        return saved;
     }
 }

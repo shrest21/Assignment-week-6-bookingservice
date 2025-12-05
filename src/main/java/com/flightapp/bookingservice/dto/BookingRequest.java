@@ -12,7 +12,7 @@ public class BookingRequest {
     private String flightId;
     private String name;
     private String email;
-    private int seats;      // used if passengers list is empty
+    private int seats;
     private String mealType;
     private List<Passenger> passengers;
 }
