@@ -1,5 +1,6 @@
 package com.flightapp.bookingservice.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flightapp.bookingservice.config.RabbitMQConfig;
 import com.flightapp.bookingservice.dto.BookingRequest;
 import com.flightapp.bookingservice.feign.BookingInterface;
@@ -25,7 +26,7 @@ public class BookingService {
     private final BookingRepository bookingRepo;
     private final BookingInterface flightClient;
 
-    public Booking bookFlight(BookingRequest request) {
+    public Booking bookFlight(BookingRequest request) throws Exception {
 
         int seatCount =
                 (request.getPassengers() != null && !request.getPassengers().isEmpty())
@@ -68,6 +69,7 @@ public class BookingService {
         );
 
 
+
         return saved;
     }
 
@@ -87,7 +89,7 @@ public class BookingService {
         return bookingRepo.findAll();
     }
 
-    public Booking cancelByPnr(String pnr) {
+    public Booking cancelByPnr(String pnr) throws Exception{
         Booking booking = bookingRepo.findByPnr(pnr);
         if (booking == null) {
             throw new RuntimeException("PNR not found: " + pnr);
@@ -104,6 +106,7 @@ public class BookingService {
                 RabbitMQConfig.CANCEL_ROUTING_KEY,
                 booking
         );
+
 
 
         return saved;

@@ -1,5 +1,6 @@
 package com.flightapp.bookingservice.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.flightapp.bookingservice.dto.BookingRequest;
 import com.flightapp.bookingservice.model.Booking;
 import com.flightapp.bookingservice.service.BookingService;
@@ -18,7 +19,7 @@ public class BookingController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Booking book(@RequestBody BookingRequest request) {
+    public Booking book(@RequestBody BookingRequest request) throws Exception {
         return service.bookFlight(request);
     }
 
@@ -33,7 +34,7 @@ public class BookingController {
     }
 
     @DeleteMapping("/cancel/{pnr}")
-    public Booking cancel(@PathVariable String pnr) {
+    public Booking cancel(@PathVariable String pnr) throws Exception{
         return service.cancelByPnr(pnr);
     }
 
