@@ -42,7 +42,7 @@ class BookingServiceTest {
     }
 
     @Test
-    void testBookFlight_success() {
+    void testBookFlight_success() throws Exception {
         BookingRequest request = new BookingRequest();
         request.setFlightId("F001");
         request.setEmail("test@gmail.com");
@@ -120,7 +120,7 @@ class BookingServiceTest {
     }
 
     @Test
-    void testCancelByPnr_success() {
+    void testCancelByPnr_success() throws Exception {
         Booking b = new Booking();
         b.setPnr("PNR123");
         b.setFlightId("F001");
